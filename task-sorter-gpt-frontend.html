@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>任務分類小助理 GPT 版</title>
+  <style>
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    #result {
+      margin-top: 2rem;
+      white-space: pre-wrap;
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>任務分類小助理 GPT 版</h1>
+  <input type="text" id="taskInput" placeholder="輸入你的任務... 例如：我明天要交報告">
+  <button onclick="classifyTask()">分類任務</button>
+  <div id="result">這裡會顯示 GPT 的分類與理由</div>
+
+  <script>
+    async function classifyTask() {
+      const task = document.getElementById("taskInput").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerText = "分析中，請稍候...";
+
+      const response = await fetch("https://task-sorter-gpt.pluschi7la13.repl.co/classify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task })
+      });
+
+      const data = await response.json();
+      resultDiv.innerText = data.result || "抱歉，GPT 沒有回應，請稍後再試。";
+    }
+  </script>
+</body>
+</html>
